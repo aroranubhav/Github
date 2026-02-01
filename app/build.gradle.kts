@@ -2,13 +2,14 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.hilt)
 }
 
 android {
     namespace = "com.maxi.github"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.maxi.github"
@@ -50,11 +51,69 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
+
+    //lifecycle
+    implementation(libs.androidx.lifecycle.viewmodel)
+    implementation(libs.androidx.lifecycle.runtime)
+
+    //hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+
+    //retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter)
+
+    //kotlinx-serialization
+    implementation(libs.koltinx.serialization.json)
+    implementation(libs.kotlinx.serialization.converter)
+
+    //room
+    implementation(libs.room.ktx)
+    implementation(libs.room)
+    ksp(libs.room.compiler)
+
+    //interceptor
+    implementation(libs.logging.interceptor)
+
+    //browser
+    implementation(libs.browser)
+
+    //glide
+    implementation(libs.glide)
+
+    //worker + hilt-work
+    implementation(libs.work.runtime)
+    implementation(libs.hilt.work)
+    ksp(libs.hilt.work.compiler)
+
+    //datastore
+    implementation(libs.data.store)
+
+    //paging
+    implementation(libs.androidx.paging)
+
+    //testing
+    testImplementation(libs.androidx.compose.ui.test.manifest)
+    testImplementation(libs.androidx.compose.ui.test.junit4)
+    testImplementation(libs.junit) //Provides the core unit testing framework for running and structuring tests
+
+    testImplementation(libs.mockk) //Mocks classes, functions, and coroutines to isolate the unit under test.
+
+    testImplementation(libs.kotlinx.coroutines.test) //Allows controlled testing of suspend functions and coroutine behavior.
+
+    testImplementation(libs.turbine) //Tests Kotlin Flow emissions in a clean, structured, and deterministic way.
+
+    testImplementation(libs.square.mockwebserver) //Simulates HTTP server responses to test Retrofit/OkHttp networking code.
+
+    testImplementation(libs.google.truth) //Provides human-readable, fluent assertions for clearer test expectations.
+
+    androidTestImplementation(libs.androidx.junit) //Runs instrumentation tests and automates UI interactions on Android.
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    debugImplementation(libs.androidx.compose.ui.tooling)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    androidTestImplementation(libs.hilt.android.testing) //Injects test-specific dependencies in Android tests using Hilt.
+    testImplementation(kotlin("test"))
+
+    testImplementation(libs.androidx.test.core) //gives a valid Context instance in JVM tests.
+    testImplementation(libs.robolectric) //run Android-dependent code on the JVM without needing an emulator or a physical device
 }
